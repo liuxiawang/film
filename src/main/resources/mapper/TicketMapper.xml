@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zeqing.order.mappers.TicketMapper">
+    <resultMap id="BaseResultMap" type="com.zeqing.order.dto.TicketOrder">
+        <result column="id" jdbcType="BIGINT" property="id" />
+        <result column="open_id" jdbcType="BIGINT" property="openId" />
+        <result column="time" jdbcType="DATE" property="time" />
+        <result column="price" jdbcType="DECIMAL" property="price" />
+        <result column="movie_id" jdbcType="BIGINT" property="movieId" />
+        <result column="calendar_id" jdbcType="BIGINT" property="calendarId" />
+        <result column="seat" jdbcType="VARCHAR" property="seat" />
+        <result column="pay_state" jdbcType="VARCHAR" property="payState" />
+        <result column="count" jdbcType="BIGINT" property="count" />
+
+        <result column="userName" jdbcType="VARCHAR" property="userName" />
+        <result column="movieName" jdbcType="VARCHAR" property="movieName" />
+        <result column="address" jdbcType="VARCHAR" property="address" />
+        <result column="start_time" jdbcType="DATE" property="startTime" />
+        <result column="end_time" jdbcType="DATE" property="endTime" />
+    </resultMap>
+
+    <select id="queryTicketOrder" resultMap="BaseResultMap">
+        SELECT
+            tor.*,
+            u.username userName,
+            mo.NAME movieName,
+            ca.start_time,
+            ca.end_time,
+            ci.address
+        FROM
+            ticket_order tor,
+            user u,
+            movie mo,
+            calendar ca,
+            cinema ci
+        WHERE
+            tor.open_id = u.user_id
+        AND mo.id = tor.movie_id
+        AND ca.id = tor.calendar_id
+        AND ci.id = ca.cinema_id
+        AND tor.open_id = #{openId}
+    </select>
+
+    <insert id="insertTicketOrder">
+        INSERT INTO ticket_order (
+            open_id,
+            time,
+            price,
+            movie_id,
+            calendar_id,
+            seat,
+            pay_state,
+            count
+        )
+        VALUES
+            (
+                #{ticket.openId},
+                #{ticket.time},
+                #{ticket.price},
+                #{ticket.movieId},
+                #{ticket.calendarId},
+                #{ticket.seat},
+                "未支付",
+                #{ticket.count}
+            )
+    </insert>
+
+    <delete id="deleteByTicketOrderId">
+        DELETE FROM ticket_order WHERE id =#{id}
+    </delete>
+
+</mapper>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zeqing.movie.mappers.MovieMapper">
+    <resultMap id="BaseResultMap" type="com.zeqing.movie.dto.Movie">
+        <result column="id" jdbcType="BIGINT" property="id" />
+        <result column="image" jdbcType="VARCHAR" property="image" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="english_name" jdbcType="VARCHAR" property="englishName" />
+        <result column="duration" jdbcType="BIGINT" property="duration" />
+        <result column="type" jdbcType="VARCHAR" property="type" />
+        <result column="director" jdbcType="VARCHAR" property="director" />
+        <result column="country" jdbcType="VARCHAR" property="country" />
+        <result column="show_date" jdbcType="DATE" property="showDate" />
+        <result column="intro" jdbcType="VARCHAR" property="intro" />
+        <result column="actor" jdbcType="VARCHAR" property="actor" />
+        <result column="Tag" jdbcType="VARCHAR" property="Tag" />
+        <result column="want_count" jdbcType="BIGINT" property="wantCount" />
+        <result column="global_release" jdbcType="BIGINT" property="globalRelease" />
+        <result column="show_type" jdbcType="BIGINT" property="showType" />
+    </resultMap>
+
+    <select id="queryMovie" resultMap="BaseResultMap">
+        SELECT * FROM movie
+        <if test="id != null and id != ''">
+            WHERE id = #{id}
+        </if>
+    </select>
+
+    <delete id="deleteById">
+        DELETE FROM movie WHERE id = #{id}
+    </delete>
+
+    <insert id="insertMovie">
+        INSERT INTO movie (
+            image,
+            NAME,
+            english_name,
+            duration,
+            type,
+            director,
+            country,
+            show_date,
+            intro,
+            actor,
+            tag,
+            want_count,
+            global_release,
+            show_type
+        )
+        VALUES
+            (
+                #{movie.image},
+                #{movie.name},
+                #{movie.englishName},
+                #{movie.duration},
+                #{movie.type},
+                #{movie.director},
+                #{movie.country},
+                #{movie.showDate},
+                #{movie.intro},
+                #{movie.actor},
+                #{movie.tag},
+                #{movie.wantCount},
+                #{movie.globalRelease},
+                #{movie.showType}
+            )
+    </insert>
+
+    <update id="updateById">
+        UPDATE movie SET
+            image = #{movie.image},
+            NAME = #{movie.name},
+            english_name = #{movie.englishName},
+            duration = #{movie.duration},
+            type = #{movie.type},
+            director = #{movie.director},
+            country = #{movie.country},
+            show_date = #{movie.showDate},
+            intro = #{movie.intro},
+            actor = #{movie.actor},
+            tag = #{movie.tag},
+            want_count = #{movie.wantCount},
+            global_release = #{movie.globalRelease},
+            show_type = #{movie.showType}
+        WHERE id = #{movie.id}
+    </update>
+</mapper>

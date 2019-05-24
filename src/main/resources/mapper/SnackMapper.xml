@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zeqing.order.mappers.SnackMapper">
+    <resultMap id="BaseResultMap" type="com.zeqing.order.dto.SnackOrder">
+        <result column="id" jdbcType="BIGINT" property="id" />
+        <result column="open_id" jdbcType="BIGINT" property="openId" />
+        <result column="snack_id" jdbcType="BIGINT" property="snackId" />
+        <result column="count" jdbcType="BIGINT" property="count" />
+        <result column="price" jdbcType="DECIMAL" property="price" />
+        <result column="pay_state" jdbcType="VARCHAR" property="payState" />
+        <result column="time" jdbcType="DATE" property="time" />
+        <result column="userName" jdbcType="VARCHAR" property="userName" />
+        <result column="snackName" jdbcType="VARCHAR" property="snackName" />
+        <result column="description" jdbcType="VARCHAR" property="description" />
+    </resultMap>
+
+    <select id="querySnackOrder" resultMap="BaseResultMap">
+        SELECT
+            so.*, u.username,
+            s.`name` snackName,
+            s.description
+        FROM
+            snack_order so,
+            `user` u,
+            snack s
+        WHERE
+            so.open_id = u.user_id
+        AND so.snack_id = s.id
+        AND open_id = #{openId}
+    </select>
+
+    <insert id="insertSnackOrder">
+        INSERT INTO snack_order (
+            open_id,
+            snack_id,
+            count,
+            price,
+            pay_state,
+            time
+        )
+        VALUES
+            (
+                #{snack.openId},
+                #{snack.snackId},
+                #{snack.count},
+                #{snack.price},
+                "未支付",
+                #{snack.time}
+            )
+    </insert>
+
+    <delete id="deleteBySnackOrderId">
+        DELETE FROM snack_order WHERE id =#{id}
+    </delete>
+
+</mapper>

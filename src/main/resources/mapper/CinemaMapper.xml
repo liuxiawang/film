@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zeqing.cinema.mappers.CinemaMapper">
+    <resultMap id="BaseResultMap" type="com.zeqing.cinema.dto.Cinema">
+        <result column="id" jdbcType="BIGINT" property="id" />
+        <result column="brand" jdbcType="VARCHAR" property="brand" />
+        <result column="province" jdbcType="VARCHAR" property="province" />
+        <result column="city" jdbcType="VARCHAR" property="city" />
+        <result column="town" jdbcType="VARCHAR" property="town" />
+        <result column="address" jdbcType="VARCHAR" property="address" />
+        <result column="sale_info" jdbcType="VARCHAR" property="saleInfo" />
+        <result column="feature" jdbcType="VARCHAR" property="feature" />
+        <result column="special" jdbcType="VARCHAR" property="special" />
+    </resultMap>
+    
+    <select id="query" resultMap="BaseResultMap">
+        SELECT * FROM cinema
+    </select>
+
+    <delete id="deleteById">
+        DELETE FROM cinema WHERE id = #{id}
+    </delete>
+
+    <insert id="insert">
+        INSERT INTO `cinema` (
+            `brand`,
+            `province`,
+            `city`,
+            `town`,
+            `address`,
+            `sale_info`,
+            `feature`,
+            `special`
+        )
+        VALUES
+            (
+                #{cinema.brand},
+                #{cinema.province},
+                #{cinema.city},
+                #{cinema.town},
+                #{cinema.address},
+                #{cinema.saleInfo},
+                #{cinema.feature},
+                #{cinema.special}
+            )
+    </insert>
+
+    <update id="updateById">
+        UPDATE `cinema`
+        SET `brand` = #{cinema.brand},
+        `province` = #{cinema.province},
+        `city` = #{cinema.city},
+        `town` = #{cinema.town},
+        `address` = #{cinema.address},
+        `sale_info` = #{cinema.saleInfo},
+        `feature` = #{cinema.feature},
+        `special` = #{cinema.special}
+        WHERE
+            `id` = #{cinema.id}
+    </update>
+
+    <select id="queryCalendarByCinemaId" resultType="com.zeqing.cinema.dto.Calendar">
+        SELECT
+            ca.*, mo.NAME movieName
+        FROM
+            calendar ca,
+            movie mo
+        WHERE
+            mo.id = ca.movie_id
+        AND ca.cinema_id = #{cinemaId}
+    </select>
+
+    <select id="querySnackByCinemaId" resultType="com.zeqing.cinema.dto.Snack">
+        SELECT
+            *
+        FROM
+            `snack`
+        WHERE
+            cinema_id = #{cinemaId}
+    </select>
+
+</mapper>
